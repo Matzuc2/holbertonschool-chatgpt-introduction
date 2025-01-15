@@ -9,6 +9,7 @@ def factorial(n):
         n -= 1
     return result
 
+
 if __name__ == "__main__":
     try:
         num = int(sys.argv[1])

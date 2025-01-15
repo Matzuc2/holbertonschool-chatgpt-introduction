@@ -2,11 +2,15 @@
 import random
 import os
 
+
 def clear_screen():
+    """Clears the terminal screen."""
     os.system('cls' if os.name == 'nt' else 'clear')
+
 
 class Minesweeper:
     def __init__(self, width=10, height=10, mines=10):
+        """Initialize the Minesweeper game."""
         self.width = width
         self.height = height
         self.mines = set(random.sample(range(width * height), mines))
@@ -14,10 +18,11 @@ class Minesweeper:
         self.revealed = [[False for _ in range(width)] for _ in range(height)]
 
     def print_board(self, reveal=False):
+        """Prints the game board."""
         clear_screen()
         print('  ' + ' '.join(str(i) for i in range(self.width)))
         for y in range(self.height):
-            print(y, end=' ')
+            print(f"{y} ", end='')
             for x in range(self.width):
                 if reveal or self.revealed[y][x]:
                     if (y * self.width + x) in self.mines:
@@ -30,6 +35,7 @@ class Minesweeper:
             print()
 
     def count_mines_nearby(self, x, y):
+        """Counts the number of mines adjacent to a cell."""
         count = 0
         for dx in [-1, 0, 1]:
             for dy in [-1, 0, 1]:
@@ -40,6 +46,13 @@ class Minesweeper:
         return count
 
     def reveal(self, x, y):
+        """
+    Reveals a cell; recursively reveals neighbors if no adjacent mines.
+
+    This method will uncover the given cell. If the cell is empty (i.e., no
+    adjacent mines), it will recursively uncover neighboring cells until cells
+    with adjacent mines are reached.
+    """
         if (y * self.width + x) in self.mines:
             return False
         self.revealed[y][x] = True
@@ -47,19 +60,27 @@ class Minesweeper:
             for dx in [-1, 0, 1]:
                 for dy in [-1, 0, 1]:
                     nx, ny = x + dx, y + dy
-                    if 0 <= nx < self.width and 0 <= ny < self.height and not self.revealed[ny][nx]:
+                    if (
+                        0 <= nx < self.width
+                        and 0 <= ny < self.height
+                        and not self.revealed[ny][nx]
+                    ):
                         self.reveal(nx, ny)
         return True
 
     def check_win(self):
-        # Check if all non-mine cells have been revealed
+        """Checks if the player has won by revealing all non-mine cells."""
         for y in range(self.height):
             for x in range(self.width):
-                if (y * self.width + x) not in self.mines and not self.revealed[y][x]:
+                if (
+                    (y * self.width + x) not in self.mines
+                    and not self.revealed[y][x]
+                ):
                     return False
         return True
 
     def play(self):
+        """Main game loop."""
         while True:
             self.print_board()
             try:
@@ -75,6 +96,7 @@ class Minesweeper:
                     break
             except ValueError:
                 print("Invalid input. Please enter numbers only.")
+
 
 if __name__ == "__main__":
     game = Minesweeper()

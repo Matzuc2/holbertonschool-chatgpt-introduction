@@ -5,6 +5,7 @@ def print_board(board):
         print(" | ".join(row))
         print("-" * 5)
 
+
 def check_winner(board):
     # Check rows for a winner
     for row in board:
@@ -13,7 +14,10 @@ def check_winner(board):
 
     # Check columns for a winner
     for col in range(len(board[0])):
-        if board[0][col] == board[1][col] == board[2][col] and board[0][col] != " ":
+        if (
+            board[0][col] == board[1][col] == board[2][col]
+            and board[0][col] != " "
+        ):
             return True
 
     # Check diagonals for a winner
@@ -24,11 +28,13 @@ def check_winner(board):
 
     return False
 
+
 def check_draw(board):
     for row in board:
         if " " in row:  # If there is any empty space, it is not a draw yet
             return False
     return True
+
 
 def tic_tac_toe():
     board = [[" "]*3 for _ in range(3)]
@@ -38,14 +44,19 @@ def tic_tac_toe():
         print_board(board)
         try:
             row = int(input(f"Enter row (0, 1, or 2) for player {player}: "))
-            col = int(input(f"Enter column (0, 1, or 2) for player {player}: "))
+            col = int(input(
+                    f"Enter column (0, 1, or 2) for player {player}: "
+            ))
         except ValueError:
             print("Invalid input! Please enter integers between 0 and 2.")
             continue
 
         # Check if the entered row/column is valid
         if row not in range(3) or col not in range(3):
-            print("Invalid input! Please enter numbers between 0 and 2 for both row and column.")
+            print(
+                "Invalid input! Please enter numbers between 0 and 2 "
+                "for both row and column."
+            )
             continue
 
         # Check if the cell is already occupied
@@ -71,6 +82,7 @@ def tic_tac_toe():
 
         # Switch players
         player = "O" if player == "X" else "X"
+
 
 if __name__ == "__main__":
     tic_tac_toe()
